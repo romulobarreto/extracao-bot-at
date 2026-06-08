@@ -1,0 +1,33 @@
+[project]
+name = "extracao-bot-at"
+version = "0.1.0"
+description = "Extração dos dados de cadastro, equipamentos, consumo e demanda dos clientes de Grupo A para o BOT de auto-atendimento."
+authors = [
+    {name = "Rômulo",email = "romulo.barreto@equatorialenergia.com"}
+]
+readme = "README.md"
+requires-python = "^3.12,<4.0"
+dependencies = [
+    "pyodbc (>=5.3.0,<6.0.0)",
+    "pandas (>=3.0.2,<4.0.0)",
+    "openpyxl (>=3.1.5,<4.0.0)",
+    "taskipy (>=1.14.1,<2.0.0)",
+    "blue (>=0.9.1,<0.10.0)",
+    "isort (>=8.0.1,<9.0.0)",
+    "pydocstyle (>=6.3.0,<7.0.0)",
+    "pytest (>=9.0.3,<10.0.0)",
+    "python-dotenv (>=1.2.2,<2.0.0)"
+]
+
+[tool.poetry]
+packages = [{include = "src"}]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.taskipy.tasks]
+conect = "poetry run python tests/test_connection.py"
+format = "isort . && blue . && pydocstyle ."
+test = "pytest -v"
+run = "poetry run python src/main.py"
