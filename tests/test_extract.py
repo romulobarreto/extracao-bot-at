@@ -11,6 +11,22 @@ from src.extract.extract import (
 )
 
 
+def test_extract_consumo() -> None:
+    """Valida extração e qualidade básica do consumo."""
+
+    df = extract_consumo()
+
+    # ✅ estrutura
+    assert not df.empty
+    assert "INSTALACAO" in df.columns
+    assert "MES" in df.columns
+    assert "CONSUMO" in df.columns
+
+    # ✅ qualidade
+    assert (df["CONSUMO"] >= 0).all()
+    assert df["MES"].astype(str).str.len().eq(6).all()
+
+
 def test_extract_cadastro() -> None:
     """Valida extração de cadastro."""
     df = extract_cadastro()
@@ -25,15 +41,6 @@ def test_extract_equipamentos() -> None:
 
     assert not df.empty
     assert "INSTALACAO" in df.columns
-
-
-def test_extract_consumo() -> None:
-    """Valida extração de consumo."""
-    df = extract_consumo()
-
-    assert not df.empty
-    assert "INSTALACAO" in df.columns
-    assert "MES" in df.columns
 
 
 def test_extract_demanda_lida() -> None:
