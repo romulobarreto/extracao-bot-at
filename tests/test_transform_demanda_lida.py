@@ -1,4 +1,4 @@
-from src.transform.demanda_lida import transform_demanda_lida
+from src.transform.consumo_demanda.demanda_lida import transform_demanda_lida
 
 
 def test_transform_demanda_lida() -> None:

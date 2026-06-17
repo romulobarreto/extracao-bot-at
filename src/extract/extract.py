@@ -4,9 +4,13 @@ Módulo responsável pela extração de dados do Snowflake via ODBC.
 
 from pathlib import Path
 from typing import Final
+import time
+import logging
 
 import pandas as pd
 import pyodbc
+
+logger = logging.getLogger(__name__)
 
 SQL_DIR: Final[Path] = Path(__file__).parent.parent / "sql"
 DSN_NAME: Final[str] = "Snowflake_EQTL"
@@ -45,20 +49,27 @@ def read_sql_file(sql_file_name: str) -> str:
 
 def run_query(sql_file_name: str) -> pd.DataFrame:
     """
-    Executa uma query SQL e retorna o resultado em DataFrame.
-
-    O SQL é carregado a partir de um arquivo na pasta sql/.
+    Executa uma query SQL a partir de um arquivo e retorna o resultado
+    como DataFrame do pandas.
     """
+
     query = read_sql_file(sql_file_name)
 
-    print(f"[EXTRACT] Executando {sql_file_name}...")
+    logger.info(f"[EXTRACT] Executando {sql_file_name}...")
+
+    start = time.time()
 
     with get_connection() as connection:
-        dataframe = pd.read_sql_query(query, connection)
+        df = pd.read_sql_query(query, connection)
 
-    print(f"[EXTRACT] {sql_file_name} carregado ({len(dataframe)} linhas)")
+    elapsed = round(time.time() - start, 2)
 
-    return dataframe
+    logger.info(
+        f"[EXTRACT] {sql_file_name} carregado com "
+        f"{len(df)} linhas em {elapsed}s"
+    )
+
+    return df
 
 
 def extract_cadastro() -> pd.DataFrame:
@@ -84,3 +95,8 @@ def extract_demanda_lida() -> pd.DataFrame:
 def extract_demanda_contratada() -> pd.DataFrame:
     """Extrai os dados de demanda contratada."""
     return run_query("demanda/demanda_contratada.sql")
+
+
+def extract_coordenadas() -> pd.DataFrame:
+    """Extrai os dados de coordenadas do banco."""
+    return run_query("coordenadas.sql")

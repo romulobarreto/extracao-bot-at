@@ -1,4 +1,4 @@
-from src.transform.final import transform_final
+from src.transform.consumo_demanda.final import transform_final
 
 
 def test_transform_final() -> None:

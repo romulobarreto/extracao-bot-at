@@ -1,5 +1,5 @@
-from src.transform.demanda_contratada import transform_demanda_contratada
-from src.transform.consumo import transform_consumo
+from src.transform.consumo_demanda.demanda_contratada import transform_demanda_contratada
+from src.transform.consumo_demanda.consumo import transform_consumo
 
 
 def test_transform_demanda_contratada() -> None:

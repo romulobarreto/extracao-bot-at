@@ -1,4 +1,4 @@
-from src.transform.consumo import transform_consumo
+from src.transform.consumo_demanda.consumo import transform_consumo
 
 
 def test_transform_consumo() -> None:
